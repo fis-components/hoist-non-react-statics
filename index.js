@@ -7,32 +7,17 @@
 var REACT_STATICS = {
     childContextTypes: true,
     contextTypes: true,
-    defaultProps: true,
     displayName: true,
     getDefaultProps: true,
     mixins: true,
-    propTypes: true,
-    type: true
-};
-
-var KNOWN_STATICS = {
-    name: true,
-    length: true,
-    prototype: true,
-    caller: true,
-    arguments: true,
-    arity: true
+    propTypes: true
 };
 
 module.exports = function hoistNonReactStatics(targetComponent, sourceComponent) {
-    var keys = Object.getOwnPropertyNames(sourceComponent);
+    var keys = Object.keys(sourceComponent);
     for (var i=0; i<keys.length; ++i) {
-        if (!REACT_STATICS[keys[i]] && !KNOWN_STATICS[keys[i]]) {
-            try {
-                targetComponent[keys[i]] = sourceComponent[keys[i]];
-            } catch (error) {
-
-            }
+        if (!REACT_STATICS[keys[i]]) {
+            targetComponent[keys[i]] = sourceComponent[keys[i]];
         }
     }
 
